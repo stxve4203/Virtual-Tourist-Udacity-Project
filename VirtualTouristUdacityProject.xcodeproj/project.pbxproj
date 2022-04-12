@@ -120,7 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				AAD11D2B2804AE97002546E8 /* Cell */,
-				AAD11D402804AEA2002546E8 /* Extensions */,
+				AAD11D402804AEA2002546E8 /* Controllers */,
 			);
 			path = VC;
 			sourceTree = "<group>";
@@ -146,6 +146,7 @@
 		AAD11D322804AE97002546E8 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AAD11D2E2804AE97002546E8 /* MO */,
 				AAD11D332804AE97002546E8 /* FlickrClient */,
 			);
 			path = Services;
@@ -161,15 +162,14 @@
 			path = FlickrClient;
 			sourceTree = "<group>";
 		};
-		AAD11D402804AEA2002546E8 /* Extensions */ = {
+		AAD11D402804AEA2002546E8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				AAD11D552804E50A002546E8 /* DetailsVC */,
-				AAD11D2E2804AE97002546E8 /* MO */,
 				AAD11D412804AEA2002546E8 /* Map */,
 				AAD11D432804AEA2002546E8 /* AlbumCollectionVC  */,
 			);
-			path = Extensions;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		AAD11D412804AEA2002546E8 /* Map */ = {
