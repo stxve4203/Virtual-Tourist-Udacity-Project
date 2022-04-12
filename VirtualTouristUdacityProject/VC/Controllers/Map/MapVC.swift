@@ -34,8 +34,8 @@ class MapVC: UIViewController {
     }
     
     //MARK: IBActions
-    @IBAction func removePins(sender: UIBarButtonItem)
-    {
+ 
+    @IBAction func deletePins(_ sender: Any) {
         let annotationsToRemove = mapView.annotations.filter
         {
             $0 !==  mapView.userLocation
@@ -46,8 +46,11 @@ class MapVC: UIViewController {
     
     @IBAction func pressedOnMap (_ sender: UILongPressGestureRecognizer) {
         
-        let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
-        saveGeoCoordination(from: locationCoordinate)
+        if sender.state != .began {
+            let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
+            saveGeoCoordination(from: locationCoordinate)
+            return
+        }
     }
     
     //MARK: saving locations and removing
@@ -58,6 +61,7 @@ class MapVC: UIViewController {
         location.latitude = annotation.coordinate.latitude
         location.locationName = annotation.title
         location.longitude = annotation.coordinate.longitude
+        
         try? dataController.viewContext.save()
         let annotationPin = AnnotationPin(pin: location)
         

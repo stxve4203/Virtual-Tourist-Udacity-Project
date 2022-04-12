@@ -43,4 +43,11 @@ extension DataController {
         }
         return allImages
     }
+    
+    func savePhotos(pin: Pin, attributes: Dictionary<String, Any>) {
+        let newPhoto = Photo(context: viewContext)
+        newPhoto.setValuesForKeys(attributes)
+        newPhoto.pin = pin
+        try? viewContext.save()
+    }
 }

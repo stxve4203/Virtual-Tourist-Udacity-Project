@@ -41,9 +41,12 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="trash.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="deletePins:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WFb-3x-Uv4"/>
+                                </connections>
                             </button>
                             <connections>
-                                <action selector="removePinsWithSender:" destination="BYZ-38-t0r" id="PMl-Nt-zZD"/>
+                                <action selector="removePinsWithSender:" destination="BYZ-38-t0r" id="dbu-Hq-Hfh"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -88,13 +91,19 @@
                                             <subviews>
                                                 <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fRO-yr-hkF">
                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                    <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                                 </imageView>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="uW9-Fe-hEQ">
+                                                    <rect key="frame" x="54" y="54" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="uW9-Fe-hEQ" firstAttribute="centerX" secondItem="8vh-P7-BAG" secondAttribute="centerX" id="4hz-g1-pM9"/>
                                                 <constraint firstAttribute="bottom" secondItem="fRO-yr-hkF" secondAttribute="bottom" id="5S1-Wv-ezs"/>
                                                 <constraint firstItem="fRO-yr-hkF" firstAttribute="leading" secondItem="8vh-P7-BAG" secondAttribute="leading" id="QJK-Ue-K4X"/>
                                                 <constraint firstItem="fRO-yr-hkF" firstAttribute="top" secondItem="8vh-P7-BAG" secondAttribute="top" id="Rd4-ja-93H"/>
                                                 <constraint firstAttribute="trailing" secondItem="fRO-yr-hkF" secondAttribute="trailing" id="fki-Fg-cck"/>
+                                                <constraint firstItem="uW9-Fe-hEQ" firstAttribute="centerY" secondItem="8vh-P7-BAG" secondAttribute="centerY" id="uUU-0c-VhJ"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
@@ -117,7 +126,13 @@
                             <constraint firstItem="Sef-v2-OWN" firstAttribute="leading" secondItem="bo9-ho-Y8x" secondAttribute="leading" id="se2-of-KaC"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="DZa-wE-U1k"/>
+                    <navigationItem key="navigationItem" id="DZa-wE-U1k">
+                        <barButtonItem key="rightBarButtonItem" image="arrow.clockwise" catalog="system" id="VAT-6K-7eD">
+                            <connections>
+                                <action selector="refreshButton:" destination="saR-qW-rOG" id="f78-KO-O8I"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="Sef-v2-OWN" id="aOz-Jq-25G"/>
                         <segue destination="bZT-Wr-aMu" kind="show" identifier="photoViewSegue" id="vxS-fI-1Op"/>
@@ -177,7 +192,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.clockwise" catalog="system" width="115" height="128"/>
         <image name="trash.fill" catalog="system" width="121" height="128"/>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

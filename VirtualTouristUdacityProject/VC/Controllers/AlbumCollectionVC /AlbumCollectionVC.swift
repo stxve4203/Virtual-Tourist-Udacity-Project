@@ -25,7 +25,8 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
     lazy var allPhotos = pin.photos?.allObjects as! [Photo]
     
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,17 +60,8 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
     }
     
     
-    private func configureFlowLayout() {
-        //mapTopInset = 2 * (view.frame.size.height / 10)
-        mapToInset = 2
-        collectionView.contentInset = UIEdgeInsets(top: mapToInset, left: 0, bottom: 0, right: 0)
-        if flowLayout == collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.minimumLineSpacing = 1.3
-            flowLayout.minimumInteritemSpacing = 1.3
-            
-            let sidesMetric = (collectionView.frame.width / 4) 
-            flowLayout.itemSize = CGSize(width: sidesMetric, height: sidesMetric)
-        }
+    @IBAction func refreshButton(_ sender: UIBarButtonItem) {
+        reloadPhotos()
     }
     
     
@@ -92,6 +84,12 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
     }
     
     func downloadPhotos() {
+
+        if pin.photos!.count > 0 {
+            // load from core data
+            self.reloadPhotos()
+        } else {
+            
         pin.photos = []
         
         flickrClient.getImagesFromFlickrURL(latitude: pin.latitude, longitude: pin.longitude) { response, error in
@@ -106,9 +104,38 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
                 self.reloadPhotos()
                 }
             }
-            
+        }
+        }
+    
+    func entityIsEmpty() -> Bool
+    {
+        var error: ErrorPointer!
+        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        var results: [Photo] =  try! self.dataController.viewContext.fetch(fetchRequest)
+
+        var count = try! dataController.viewContext.count(for: fetchRequest)
+print(count)
+        
+        if error != nil
+        {
+            print("Error: \(error.debugDescription)")
+            return true
+        }
+        else
+        {
+            if count == 0
+            {
+                return true
+            }
+            else
+            {
+                return false
+            }
+
         }
 
+
+    }
     }
 
 
