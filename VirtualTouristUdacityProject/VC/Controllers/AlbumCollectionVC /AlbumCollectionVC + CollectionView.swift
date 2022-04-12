@@ -17,18 +17,19 @@ extension AlbumCollectionVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.PHOTO_COLLECTION_VIEW_CELL, for: indexPath) as! PhotoCell
-        
-        let photo = allPhotos[indexPath.row]
-        if let source = photo.imageURL {
-            flickrClient.downloadImage(img: source) { data, error in
-                if let data = data {
-                    DispatchQueue.main.async {
-                        cell.photoImageView.image = data
-                    }
-                } else {
-                    return
-                }
+            
+            // If there are some persisted images, use them as datasource.
+             let photo = allPhotos[indexPath.row]
+        if (photo.imageData == nil) {
+            downloadPhotos()
+            DispatchQueue.main.async {
+                let image = UIImage(data: photo.imageData!)
+                cell.photoImageView.image = image
             }
+            
+        } else {
+            let image = UIImage(data: photo.imageData!)
+            cell.photoImageView.image = image
         }
         return cell
     }

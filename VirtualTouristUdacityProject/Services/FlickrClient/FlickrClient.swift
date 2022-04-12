@@ -18,7 +18,7 @@ class FlickrClient {
         self.session = session
     }
     
-    func getParametersWithCoordinates(latitude: Double, longitude: Double) -> [String: Any] {
+    func getParametersWithCoordinates(latitude: Double, longitude: Double, perPage: Int, page: Int ) -> [String: Any] {
     
         let parameters = ([
             ParameterKeys.APIKey: Constants.API_KEY,
@@ -27,7 +27,9 @@ class FlickrClient {
             ParameterKeys.latitude: latitude,
             ParameterKeys.longitude: longitude,
             ParameterKeys.NoJsonCallback: ParameterKeys.NoJsonCallback,
-            ParameterKeys.Extra: ParameterDefaultValues.ExtraMediumURL
+            ParameterKeys.Extra: ParameterDefaultValues.ExtraMediumURL,
+            ParameterKeys.per_page: perPage,
+            ParameterKeys.page: page
             
         ] as? [String : Any])!
         return parameters
@@ -81,16 +83,16 @@ class FlickrClient {
     }
 
     
-    func getImagesFromFlickrURL(latitude: Double, longitude: Double, completionHandler: @escaping ([PhotoInformation], Error?) -> Void) {
+    func getImagesFromFlickrURL(latitude: Double, longitude: Double, completionHandler: @escaping ([PhotoInformation], Int, Error?) -> Void) {
         
-        let parameters = getParametersWithCoordinates(latitude: latitude, longitude: longitude)
+        let parameters = getParametersWithCoordinates(latitude: latitude, longitude: longitude, perPage: 10, page: 1)
         let url = getFlickrURLAndParameters(parameters: parameters)!
         
         _ = taskForGETRequest(url: url, responseType: PhotoResponseData.self) { response, error in
             if let response = response {
-                completionHandler(response.photos.photo, nil)
+                completionHandler(response.photos.photo, response.photos.perPage, nil)
             } else {
-                completionHandler([], error)
+                completionHandler([], 0, error)
             }
         }
 }

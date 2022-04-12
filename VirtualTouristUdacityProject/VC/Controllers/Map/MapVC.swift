@@ -42,6 +42,8 @@ class MapVC: UIViewController {
         }
         mapView.removeAnnotations( annotationsToRemove )
         deletePinsFromCoreData()
+        deletePhotosFromCoreData()
+        
     }
     
     @IBAction func pressedOnMap (_ sender: UILongPressGestureRecognizer) {
@@ -100,6 +102,25 @@ class MapVC: UIViewController {
         }
         
     }
+    
+    private func deletePhotosFromCoreData() {
+        do{
+            let newPhoto = Photo(context: self.dataController.viewContext)
+            let photoSet = pinMO?.photos
+            self.pinMO?.removeFromPhotos(newPhoto)
+            self.pinMO?.removeFromPhotos(photoSet!)
+            try dataController.viewContext.save()
+                print("photo deleted")
+        } catch {
+            print("Failed \(error)")
+        }
+        do {
+            try dataController.viewContext.save()
+        } catch {
+            print("Failed saving  \(error)")
+        }
+    }
+    
     
     //MARK: Prepare segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

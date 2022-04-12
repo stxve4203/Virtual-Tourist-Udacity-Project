@@ -19,28 +19,29 @@ struct PhotoResponseData: Codable {
 }
 
 struct PhotoSearchData: Codable {
+
     let page: Int
     let pages: Int
     let perPage: Int
     let photo: [PhotoInformation]
     
     enum CodingKeys: String, CodingKey {
-        case page
-        case pages
-        
+        case page = "page"
+        case pages = "pages"
         case perPage = "perpage"
         case photo = "photo"
     }
 }
 
 struct PhotoInformation: Codable {
-    
     let title: String
     let url_m: String?
     let id: String?
+    var imageData: UIImage?
     
     
     enum CodingKeys: String, CodingKey {
+    
         case title = "title"
         case url_m = "url_m"
         case id = "id"

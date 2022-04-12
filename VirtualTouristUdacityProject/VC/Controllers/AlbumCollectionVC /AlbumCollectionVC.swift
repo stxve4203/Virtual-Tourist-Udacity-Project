@@ -38,7 +38,6 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        
         title = placeName
     }
     
@@ -56,7 +55,10 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
     
     func reloadPhotos() {
         allPhotos = pin.photos!.allObjects as! [Photo]
-        collectionView.reloadData()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+
+        }
     }
     
     
@@ -85,57 +87,34 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
     
     func downloadPhotos() {
 
-        if pin.photos!.count > 0 {
+        let photo = allPhotos
+        if photo.count > 0 {
             // load from core data
-            self.reloadPhotos()
+            print("photos are in core data")
         } else {
-            
-        pin.photos = []
-        
-        flickrClient.getImagesFromFlickrURL(latitude: pin.latitude, longitude: pin.longitude) { response, error in
-
+            pin.photos = []
+            DispatchQueue.main.async {
+                self.flickrClient.getImagesFromFlickrURL(latitude: self.pin.latitude, longitude: self.pin.longitude) { response, error, page in
             for image in response {
-                let totalPhotos = response.count
                 let newPhoto = Photo(context: self.dataController.viewContext)
                 newPhoto.imageID = image.id
                 newPhoto.imageURL = URL(string: image.url_m!)!
+                
+                let source = URL(string: image.url_m!)
+                self.flickrClient.downloadImage(img: source) { data, error in
+                    let imageAsData = data!.jpegData(compressionQuality: 1)
+                newPhoto.imageData = imageAsData
                 self.pin.addToPhotos(newPhoto)
                 try? self.dataController.viewContext.save()
                 self.reloadPhotos()
                 }
             }
-        }
-        }
-    
-    func entityIsEmpty() -> Bool
-    {
-        var error: ErrorPointer!
-        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-        var results: [Photo] =  try! self.dataController.viewContext.fetch(fetchRequest)
-
-        var count = try! dataController.viewContext.count(for: fetchRequest)
-print(count)
-        
-        if error != nil
-        {
-            print("Error: \(error.debugDescription)")
-            return true
-        }
-        else
-        {
-            if count == 0
-            {
-                return true
             }
-            else
-            {
-                return false
-            }
-
         }
 
 
     }
+     
     }
-
+}
 

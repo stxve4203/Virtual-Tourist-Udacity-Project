@@ -30,6 +30,8 @@ enum ParameterKeys {
     static let Extra = "extras"
     static let latitude = "lat"
     static let longitude = "lon"
+    static let per_page = "per_page"
+    static let page = "page"
 }
 
 enum ParameterDefaultValues {
