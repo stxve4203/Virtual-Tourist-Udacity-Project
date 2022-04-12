@@ -24,12 +24,12 @@
 		AAD11D3F2804AE97002546E8 /* FlickrResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD11D352804AE97002546E8 /* FlickrResponse.swift */; };
 		AAD11D462804AEA2002546E8 /* MapVC + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD11D422804AEA2002546E8 /* MapVC + Extensions.swift */; };
 		AAD11D472804AEA2002546E8 /* AlbumCollectionVC + CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD11D442804AEA2002546E8 /* AlbumCollectionVC + CollectionView.swift */; };
-		AAD11D4B2804AF0C002546E8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD11D4A2804AF0C002546E8 /* DataController.swift */; };
-		AAD11D4D2804B006002546E8 /* FlickrService+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD11D4C2804B006002546E8 /* FlickrService+Constants.swift */; };
 		AAD11D502804C0B1002546E8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD11D4F2804C0B1002546E8 /* CoreData.framework */; };
 		AAD11D522804C0B5002546E8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD11D512804C0B5002546E8 /* MapKit.framework */; };
 		AAD11D542804C0BA002546E8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD11D532804C0BA002546E8 /* CoreLocation.framework */; };
 		AAD11D572804E522002546E8 /* DetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD11D562804E522002546E8 /* DetailsVC.swift */; };
+		AAD11D5B2805822F002546E8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD11D5A2805822F002546E8 /* DataController.swift */; };
+		AAD11D5D280582A8002546E8 /* FlickrService + Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD11D5C280582A8002546E8 /* FlickrService + Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,12 +52,12 @@
 		AAD11D352804AE97002546E8 /* FlickrResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrResponse.swift; sourceTree = "<group>"; };
 		AAD11D422804AEA2002546E8 /* MapVC + Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MapVC + Extensions.swift"; sourceTree = "<group>"; };
 		AAD11D442804AEA2002546E8 /* AlbumCollectionVC + CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlbumCollectionVC + CollectionView.swift"; sourceTree = "<group>"; };
-		AAD11D4A2804AF0C002546E8 /* DataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataController.swift; path = "../../../Virtual-Tourist-Udacity/Virtual-Tourist-Udacity/Models/DataController.swift"; sourceTree = "<group>"; };
-		AAD11D4C2804B006002546E8 /* FlickrService+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FlickrService+Constants.swift"; path = "../../../../VirtualTouristTest/VirtualTourist/Services/FlickrService/FlickrService+Constants.swift"; sourceTree = "<group>"; };
 		AAD11D4F2804C0B1002546E8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAD11D512804C0B5002546E8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		AAD11D532804C0BA002546E8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		AAD11D562804E522002546E8 /* DetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsVC.swift; sourceTree = "<group>"; };
+		AAD11D5A2805822F002546E8 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		AAD11D5C280582A8002546E8 /* FlickrService + Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlickrService + Constants.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,8 +156,8 @@
 			isa = PBXGroup;
 			children = (
 				AAD11D342804AE97002546E8 /* FlickrClient.swift */,
-				AAD11D4C2804B006002546E8 /* FlickrService+Constants.swift */,
 				AAD11D352804AE97002546E8 /* FlickrResponse.swift */,
+				AAD11D5C280582A8002546E8 /* FlickrService + Constants.swift */,
 			);
 			path = FlickrClient;
 			sourceTree = "<group>";
@@ -193,8 +193,8 @@
 		AAD11D492804AEFD002546E8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				AAD11D4A2804AF0C002546E8 /* DataController.swift */,
 				AAD11CEE2804AE40002546E8 /* VirtualTouristUdacityProject.xcdatamodeld */,
+				AAD11D5A2805822F002546E8 /* DataController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -292,15 +292,15 @@
 				AAD11D3D2804AE97002546E8 /* PinMO + Extensions.swift in Sources */,
 				AAD11D382804AE97002546E8 /* AlbumCollectionVC.swift in Sources */,
 				AAD11D3B2804AE97002546E8 /* PhotoMO + Extensions.swift in Sources */,
+				AAD11D5D280582A8002546E8 /* FlickrService + Constants.swift in Sources */,
 				AAD11D362804AE97002546E8 /* Constants.swift in Sources */,
 				AAD11D3E2804AE97002546E8 /* FlickrClient.swift in Sources */,
 				AAD11D462804AEA2002546E8 /* MapVC + Extensions.swift in Sources */,
 				AAD11CF02804AE40002546E8 /* VirtualTouristUdacityProject.xcdatamodeld in Sources */,
 				AAD11D392804AE97002546E8 /* PhotoCell.swift in Sources */,
-				AAD11D4D2804B006002546E8 /* FlickrService+Constants.swift in Sources */,
 				AAD11CE62804AE40002546E8 /* AppDelegate.swift in Sources */,
 				AAD11D472804AEA2002546E8 /* AlbumCollectionVC + CollectionView.swift in Sources */,
-				AAD11D4B2804AF0C002546E8 /* DataController.swift in Sources */,
+				AAD11D5B2805822F002546E8 /* DataController.swift in Sources */,
 				AAD11D3A2804AE97002546E8 /* MapVC.swift in Sources */,
 				AAD11D572804E522002546E8 /* DetailsVC.swift in Sources */,
 				AAD11D3C2804AE97002546E8 /* DataController + Extensions.swift in Sources */,
