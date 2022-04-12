@@ -9,20 +9,24 @@ import UIKit
 
 class DetailsVC: UIViewController {
 
-    var strd: UIImage!
-
-    var titles: String!
+    var flickrClient: FlickrClient!
+    var photo: Photo!
     
     @IBOutlet weak var imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        strd = imageView.image
-     
-        print(strd)
-        print(titles)
+        if let source = photo.imageURL {
+            flickrClient.downloadImage(img: source) { data, error in
+                if let data = data {
+                    DispatchQueue.main.async {
+                        self.imageView.image = data
+                    }
     }
 
 
+}
+        }
+    }
 }

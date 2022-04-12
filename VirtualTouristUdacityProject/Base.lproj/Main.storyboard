@@ -120,7 +120,7 @@
                     <navigationItem key="navigationItem" id="DZa-wE-U1k"/>
                     <connections>
                         <outlet property="collectionView" destination="Sef-v2-OWN" id="aOz-Jq-25G"/>
-                        <segue destination="bZT-Wr-aMu" kind="presentation" identifier="photoViewSegue" modalPresentationStyle="fullScreen" id="vxS-fI-1Op"/>
+                        <segue destination="bZT-Wr-aMu" kind="show" identifier="photoViewSegue" id="vxS-fI-1Op"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VsZ-ru-LWY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

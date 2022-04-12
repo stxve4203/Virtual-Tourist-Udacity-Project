@@ -35,11 +35,23 @@ extension AlbumCollectionVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = allPhotos[indexPath.row]
-        pin.removeFromPhotos(photo)
+        self.performSegue(withIdentifier: "photoViewSegue", sender: photo)
         try? dataController.viewContext.save()
         reloadPhotos()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "photoViewSegue" {
+            if let detailsVC = segue.destination as? DetailsVC {
+                if let sendPhoto = sender as? Photo {
+                    detailsVC.photo = sendPhoto
+                }
+                
+                detailsVC.flickrClient = flickrClient
+            }
+
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
