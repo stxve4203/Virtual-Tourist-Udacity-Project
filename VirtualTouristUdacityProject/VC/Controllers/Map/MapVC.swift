@@ -47,11 +47,16 @@ class MapVC: UIViewController {
     }
     
     @IBAction func pressedOnMap (_ sender: UILongPressGestureRecognizer) {
-        
-        if sender.state != .began {
+        if sender.state == .began {
+                  // add a PIN to the map
             let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
-            saveGeoCoordination(from: locationCoordinate)
-            return
+            } else if sender.state == .changed {
+                 // update the PIN to the new location
+                refreshMapData()
+            } else if sender.state == .ended {
+                // Save this PIN to CoreData
+                let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
+                saveGeoCoordination(from: locationCoordinate)
         }
     }
     
