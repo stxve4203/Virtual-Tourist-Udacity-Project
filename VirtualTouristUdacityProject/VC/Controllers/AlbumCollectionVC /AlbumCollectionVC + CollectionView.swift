@@ -21,10 +21,12 @@ extension AlbumCollectionVC: UICollectionViewDelegate, UICollectionViewDataSourc
             // If there are some persisted images, use them as datasource.
              let photo = allPhotos[indexPath.row]
         if (photo.imageData == nil) {
+            cell.activityIndicator.startAnimating()
             downloadPhotos()
             DispatchQueue.main.async {
                 let image = UIImage(data: photo.imageData!)
                 cell.photoImageView.image = image
+                cell.activityIndicator.stopAnimating()
             }
             
         } else {
@@ -36,8 +38,8 @@ extension AlbumCollectionVC: UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = allPhotos[indexPath.row]
-        self.performSegue(withIdentifier: "photoViewSegue", sender: photo)
-        try? dataController.viewContext.save()
+        dataController.viewContext.delete(photo)
+        try! dataController.viewContext.save()
         reloadPhotos()
     }
     

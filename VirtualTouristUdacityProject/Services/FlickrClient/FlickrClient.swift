@@ -84,8 +84,9 @@ class FlickrClient {
 
     
     func getImagesFromFlickrURL(latitude: Double, longitude: Double, completionHandler: @escaping ([PhotoInformation], Int, Error?) -> Void) {
-        
-        let parameters = getParametersWithCoordinates(latitude: latitude, longitude: longitude, perPage: 10, page: 1)
+        let randomInt = Int.random(in: 0..<10)
+
+        let parameters = getParametersWithCoordinates(latitude: latitude, longitude: longitude, perPage: 25, page: randomInt)
         let url = getFlickrURLAndParameters(parameters: parameters)!
         
         _ = taskForGETRequest(url: url, responseType: PhotoResponseData.self) { response, error in

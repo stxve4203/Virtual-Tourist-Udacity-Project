@@ -108,7 +108,7 @@ class MapVC: UIViewController {
         
     }
     
-    private func deletePhotosFromCoreData() {
+    func deletePhotosFromCoreData() {
         do{
             let newPhoto = Photo(context: self.dataController.viewContext)
             let photoSet = pinMO?.photos

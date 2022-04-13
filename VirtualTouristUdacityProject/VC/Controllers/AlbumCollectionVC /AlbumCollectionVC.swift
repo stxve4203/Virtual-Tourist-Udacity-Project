@@ -24,9 +24,9 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
     
     lazy var allPhotos = pin.photos?.allObjects as! [Photo]
     
+    
     @IBOutlet weak var collectionView: UICollectionView!
 
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,13 +57,15 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
         allPhotos = pin.photos!.allObjects as! [Photo]
         DispatchQueue.main.async {
             self.collectionView.reloadData()
-
         }
     }
     
     
     @IBAction func refreshButton(_ sender: UIBarButtonItem) {
         reloadPhotos()
+        self.allPhotos.removeAll()
+        self.collectionView.reloadData()
+        downloadPhotos()
     }
     
     
