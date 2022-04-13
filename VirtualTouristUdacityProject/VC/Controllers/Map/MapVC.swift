@@ -30,7 +30,6 @@ class MapVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshMapData()
-        
     }
     
     //MARK: IBActions
@@ -46,17 +45,22 @@ class MapVC: UIViewController {
         
     }
     
+    
     @IBAction func pressedOnMap (_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
                   // add a PIN to the map
-            let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D()
+            mapView.addAnnotation(annotation)
             } else if sender.state == .changed {
                  // update the PIN to the new location
                 refreshMapData()
             } else if sender.state == .ended {
                 // Save this PIN to CoreData
+                let annotation = MKPointAnnotation()
                 let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
-                saveGeoCoordination(from: locationCoordinate)
+                saveGeoCoordination(coordinate: locationCoordinate)
+               saveLocation(annotation)
         }
     }
     
@@ -75,7 +79,7 @@ class MapVC: UIViewController {
         self.mapView.addAnnotations([annotationPin])
     }
     
-    func saveGeoCoordination(from coordinate: CLLocationCoordinate2D) {
+    func saveGeoCoordination(coordinate: CLLocationCoordinate2D) {
         let geoPosition = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         let annotation = MKPointAnnotation()
         CLGeocoder().reverseGeocodeLocation(geoPosition) { placemarks, error in
