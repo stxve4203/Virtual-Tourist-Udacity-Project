@@ -16,6 +16,9 @@ class MapVC: UIViewController {
     var fetchedResultsController: NSFetchedResultsController<Pin>!
     var pinMO: Pin?
     var photo: Photo?
+    var randomPages: Int!
+    var maxPages: Int!
+    var maxPhotos: Int!
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -64,6 +67,7 @@ class MapVC: UIViewController {
         }
     }
     
+   
     //MARK: saving locations and removing
     func saveLocation(_ annotation: MKPointAnnotation) {
         let location = Pin(context: dataController.viewContext)
@@ -72,11 +76,18 @@ class MapVC: UIViewController {
         location.latitude = annotation.coordinate.latitude
         location.locationName = annotation.title
         location.longitude = annotation.coordinate.longitude
-        
-        try? dataController.viewContext.save()
+        self.flickrClient.getImagesFromFlickrURL(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude, page: 1) { photo, page, error in
+                //let maxPages = page
+            let randomPage = Int.random(in: 1...page)
+            self.randomPages = randomPage
+            self.maxPages = page
+            location.maxPages = Int64(page)
+            try? self.dataController.viewContext.save()
         let annotationPin = AnnotationPin(pin: location)
         
         self.mapView.addAnnotations([annotationPin])
+      //  requestPhotos(location)
+    }
     }
     
     func saveGeoCoordination(coordinate: CLLocationCoordinate2D) {
@@ -87,9 +98,11 @@ class MapVC: UIViewController {
             annotation.title = placemark.name ?? "Unknown"
             annotation.subtitle = placemark.country
             annotation.coordinate = coordinate
+           
             self.saveLocation(annotation)
         }
     }
+    
     
     private func deletePinsFromCoreData() {
         do{
@@ -144,6 +157,8 @@ class MapVC: UIViewController {
         photoDisplayVC.dataController = dataController
         photoDisplayVC.flickrClient = flickrClient
         photoDisplayVC.photo = photo
+        photoDisplayVC.randomPages = randomPages
+        photoDisplayVC.maxPages = maxPages
     }
 }
 }

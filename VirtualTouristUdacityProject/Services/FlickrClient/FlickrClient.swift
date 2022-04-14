@@ -11,6 +11,9 @@ import CoreLocation
 import CoreData
 
 class FlickrClient {
+   
+    var totalPages: Int?
+    lazy var maxPhotos = Pin().maxPages
     
     var session: URLSession
 
@@ -18,7 +21,8 @@ class FlickrClient {
         self.session = session
     }
     
-    func getParametersWithCoordinates(latitude: Double, longitude: Double, perPage: Int, page: Int ) -> [String: Any] {
+        
+    func getParametersWithCoordinates(latitude: Double, longitude: Double, page: Int, perPage: Int) -> [String: Any] {
     
         let parameters = ([
             ParameterKeys.APIKey: Constants.API_KEY,
@@ -29,7 +33,9 @@ class FlickrClient {
             ParameterKeys.NoJsonCallback: ParameterKeys.NoJsonCallback,
             ParameterKeys.Extra: ParameterDefaultValues.ExtraMediumURL,
             ParameterKeys.per_page: perPage,
-            ParameterKeys.page: page
+            ParameterKeys.page: page,
+            ParameterKeys.pages: ParameterKeys.pages
+            
             
         ] as? [String : Any])!
         return parameters
@@ -81,17 +87,20 @@ class FlickrClient {
         task.resume()
         return task
     }
-
+                              
     
-    func getImagesFromFlickrURL(latitude: Double, longitude: Double, completionHandler: @escaping ([PhotoInformation], Int, Error?) -> Void) {
-        let randomInt = Int.random(in: 0..<10)
-
-        let parameters = getParametersWithCoordinates(latitude: latitude, longitude: longitude, perPage: 25, page: randomInt)
+    func getImagesFromFlickrURL(latitude: Double, longitude: Double, page: Int, completionHandler: @escaping ([PhotoInformation], Int, Error?) -> Void) {
+        
+        let parameters = getParametersWithCoordinates(latitude: latitude, longitude: longitude, page: page, perPage: 50)
         let url = getFlickrURLAndParameters(parameters: parameters)!
         
         _ = taskForGETRequest(url: url, responseType: PhotoResponseData.self) { response, error in
             if let response = response {
-                completionHandler(response.photos.photo, response.photos.perPage, nil)
+                completionHandler(response.photos.photo, response.photos.pages, nil)
+//                print("Max pages for Photos: \(response.photos.pages)")
+//                print("Total photos returned \(response.photos.photo.count)")
+//                print("Photos per page: \(response.photos.perPage)")
+                
             } else {
                 completionHandler([], 0, error)
             }

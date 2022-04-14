@@ -24,9 +24,11 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
     
     lazy var allPhotos = pin.photos?.allObjects as! [Photo]
     
+    var randomPages: Int!
+    var maxPages: Int!
     
     @IBOutlet weak var collectionView: UICollectionView!
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +47,8 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
         super.viewWillAppear(animated)
         //configureFlowLayout()
         setupFetchedResultsController()
-        downloadPhotos()
+        downloadPhotos(page: 1)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,20 +63,22 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
         }
     }
     
-    
     @IBAction func refreshButton(_ sender: UIBarButtonItem) {
         reloadPhotos()
+        let pinPages = pin.maxPages
+        let randomPage = Int.random(in: 1...Int(pinPages))
         self.allPhotos.removeAll()
         self.collectionView.reloadData()
-        downloadPhotos()
+        downloadPhotos(page: randomPage)
+        print(randomPage)
     }
     
     
     func setupFetchedResultsController() {
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
         
-            let predicate = NSPredicate(format: "pin == %@", pin)
-            fetchRequest.predicate = predicate
+        let predicate = NSPredicate(format: "pin == %@", pin)
+        fetchRequest.predicate = predicate
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
@@ -87,8 +92,8 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
         }
     }
     
-    func downloadPhotos() {
-
+    func downloadPhotos(page: Int) {
+        
         let photo = allPhotos
         if photo.count > 0 {
             // load from core data
@@ -96,27 +101,31 @@ class AlbumCollectionVC: UIViewController, NSFetchedResultsControllerDelegate {
         } else {
             pin.photos = []
             DispatchQueue.main.async {
-                self.flickrClient.getImagesFromFlickrURL(latitude: self.pin.latitude, longitude: self.pin.longitude) { response, error, page in
-            for image in response {
-                let newPhoto = Photo(context: self.dataController.viewContext)
-                newPhoto.imageID = image.id
-                newPhoto.imageURL = URL(string: image.url_m!)!
+                //  // 1...(total photos returned) / Photos Per Page.
+                //
+                // (total photos available)/(page size)
                 
-                let source = URL(string: image.url_m!)
-                self.flickrClient.downloadImage(img: source) { data, error in
-                    let imageAsData = data!.jpegData(compressionQuality: 1)
-                newPhoto.imageData = imageAsData
-                self.pin.addToPhotos(newPhoto)
-                try? self.dataController.viewContext.save()
-                self.reloadPhotos()
+                self.flickrClient.getImagesFromFlickrURL(latitude: self.pin.latitude, longitude: self.pin.longitude, page: page) { response, page, error  in
+                    for image in response {
+                        let newPhoto = Photo(context: self.dataController.viewContext)
+                        newPhoto.imageID = image.id
+                        newPhoto.imageURL = URL(string: image.url_m!)!
+                        
+                        DispatchQueue.global(qos: .utility).async {
+                        let source = URL(string: image.url_m!)
+                        self.flickrClient.downloadImage(img: source) { data, error in
+                            let imageAsData = data!.jpegData(compressionQuality: 1)
+                            newPhoto.imageData = imageAsData
+                            self.pin.addToPhotos(newPhoto)
+                            try? self.dataController.viewContext.save()
+                            self.reloadPhotos()
+                        }
+                        }
+                    }
                 }
-            }
+                
             }
         }
-
-
-    }
-     
     }
 }
 

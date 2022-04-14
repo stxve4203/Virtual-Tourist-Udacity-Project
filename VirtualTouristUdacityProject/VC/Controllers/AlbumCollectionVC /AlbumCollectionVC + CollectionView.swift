@@ -10,32 +10,41 @@ import CoreData
 import UIKit
 
 extension AlbumCollectionVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return allPhotos.count
+        return self.allPhotos.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.PHOTO_COLLECTION_VIEW_CELL, for: indexPath) as! PhotoCell
-            
-            // If there are some persisted images, use them as datasource.
-             let photo = allPhotos[indexPath.row]
+        
+        // If there are some persisted images, use them as datasource.
+      
+        cell.activityIndicator.startAnimating()
+        DispatchQueue.global(qos: .background).async {
+        let photo = self.allPhotos[indexPath.row]
+        let image = UIImage(data: photo.imageData!)
+        
         if (photo.imageData == nil) {
+       
             cell.activityIndicator.startAnimating()
-            downloadPhotos()
-            DispatchQueue.main.async {
+            self.downloadPhotos(page: self.randomPages ?? 1)
+            DispatchQueue.global(qos: .background).async {
                 let image = UIImage(data: photo.imageData!)
                 cell.photoImageView.image = image
                 cell.activityIndicator.stopAnimating()
             }
-            
         } else {
-            let image = UIImage(data: photo.imageData!)
-            cell.photoImageView.image = image
+            DispatchQueue.main.async {
+                cell.activityIndicator.startAnimating()
+                cell.photoImageView.image = image
+                cell.activityIndicator.stopAnimating()
+
+            }
+        }
         }
         return cell
     }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = allPhotos[indexPath.row]
         dataController.viewContext.delete(photo)
@@ -52,22 +61,22 @@ extension AlbumCollectionVC: UICollectionViewDelegate, UICollectionViewDataSourc
                 
                 detailsVC.flickrClient = flickrClient
             }
-
+            
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         let noOfCellsInRow = 3
-
+        
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-
+        
         let totalSpace = flowLayout.sectionInset.left
-            + flowLayout.sectionInset.right
-            + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
-
+        + flowLayout.sectionInset.right
+        + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
+        
         let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
-
+        
         return CGSize(width: size, height: size)
     }
 }
